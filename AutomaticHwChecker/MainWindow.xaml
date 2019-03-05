@@ -4,9 +4,29 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:AutomaticHwChecker"
-        mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
-        
-    </Grid>
+        mc:Ignorable="d" WindowStartupLocation="CenterScreen"
+        Title="Automatic Hw Checker" 
+        Height="250" Width="900" ResizeMode="NoResize" FontSize="16" FontFamily="Segoe UI Semilight">
+    <Window.Background>
+        <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+            <GradientStop Offset="0" Color="White"/>
+            <GradientStop Offset="1" Color="AliceBlue"/>
+        </LinearGradientBrush>
+    </Window.Background>
+    <StackPanel Margin="5">
+        <TextBlock Text="Automatic Hw Checker" Margin="5" TextAlignment="Center" FontSize="28"/>
+        <StackPanel Margin="5">
+            <DockPanel>
+                <TextBlock VerticalAlignment="Center" Text="Homework's solutions directory: " DockPanel.Dock="Left" Margin="5"/>
+                <Button Content="..." DockPanel.Dock="Right" Padding="5" Margin="5" Name="ChooseHomeworkDirectoryButton"/>
+                <TextBox VerticalContentAlignment="Center" Margin="5" Name="HomeworkSolutionsDirectoryTextbox"/>
+            </DockPanel>
+            <DockPanel>
+                <TextBlock VerticalAlignment="Center" Text="Input-output samples directory: " DockPanel.Dock="Left" Margin="5"/>
+                <Button Content="..." DockPanel.Dock="Right" Padding="5" Margin="5" Name="ChooseInputOutputDirectoryButton"/>
+                <TextBox VerticalContentAlignment="Center" Margin="5" Name="InputOutputDirectoryTextbox"/>
+            </DockPanel>
+            <Button Name="RunButton" Content="Run" Margin="5" Padding="5" IsEnabled="True"/>
+        </StackPanel>
+    </StackPanel>
 </Window>

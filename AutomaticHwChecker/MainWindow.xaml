@@ -26,7 +26,7 @@
                 <Button Content="..." DockPanel.Dock="Right" Padding="5" Margin="5" Name="ChooseInputOutputDirectoryButton"/>
                 <TextBox VerticalContentAlignment="Center" Margin="5" Name="InputOutputDirectoryTextbox"/>
             </DockPanel>
-            <Button Name="RunButton" Content="Run" Margin="5" Padding="5" IsEnabled="True"/>
+            <Button Name="RunButton" Content="Run" Margin="5" Padding="5" IsEnabled="True" Click="RunButton_OnClick"/>
         </StackPanel>
     </StackPanel>
 </Window>

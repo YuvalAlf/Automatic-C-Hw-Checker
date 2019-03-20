@@ -54,5 +54,17 @@ namespace AutomaticHwChecker
         }
 
         public static string AsString(this bool @this) => @this ? "v" : "x";
+
+        public static string PadZeroesLeft(this string @this, int amount)
+        {
+            if (@this.Length >= amount)
+                return @this;
+            return string.Concat("0".Repeat(amount - @this.Length), @this);
+        }
+
+        public static string CsvLine(IEnumerable<string> data, params string[] rest)
+        {
+            return string.Join(",", data.Concat(rest).Select(str => "\"" + str.Replace("\"", "\"\"") + "\""));
+        }
     }
 }

@@ -39,10 +39,15 @@ namespace AutomaticHwChecker
             using (var outputFile = File.CreateText(Path.Combine(Path.GetDirectoryName(exeFile), Path.GetFileName(outputPath))))
             {
                 process.StandardInput.Write(inputFile.ReadToEnd());
+                process.StandardInput.Flush();
+                process.StandardInput.Close();
                 var result = process.StandardOutput.ReadToEnd();
                 outputFile.Write(result);
-                return File.ReadAllText(outputPath).Equals(result);
+                var expectedResult = File.ReadAllText(outputPath);
+                return expectedResult.CleanSpaces().Equals(result.CleanSpaces());
             }
         }
+
+        private static string CleanSpaces(this string @this) => @this.ToLower().Replace(" ", "").Replace("\n", "").Replace("\r", "");
     }
 }

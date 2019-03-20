@@ -31,14 +31,14 @@ namespace AutomaticHwChecker
             var cFilePath = GetcFile(dirPath, problems);
             var exeFile = CompilingOperation.Compile(cFilePath, problems);
             var runningResults = CheckingOperation.RunTests(exeFile, inputOutputPath);
-            
+            if (problems.Length > 4)
+                logFile.WriteImportantLine(problems.ToString());
             logFile.UncorporateTab();
             logFile.WriteLine("Ended checking " + dirPath);
 
-            if (problems.Length < 4)
-                problems = problems.Clear().Append(true.AsString());
+            var didCompile = (exeFile != null).AsString();
 
-            return new StudentsAnswers(cFilePath, problems.ToString(), ids, runningResults);
+            return new StudentsAnswers(cFilePath, didCompile, ids, runningResults);
         }
 
         private static string GetcFile(string dirPath, StringBuilder problems)
@@ -75,7 +75,7 @@ namespace AutomaticHwChecker
             yield return "ID,C File Path,Did Compile," + string.Join(",", io.Select(x => x.InputName)) + ",Comments,Grade";
             foreach (var answer in studentsResults)
             foreach (var id in answer.Ids)
-                yield return $"{id},{answer.cFilePath},{answer.DidCompile}," + string.Join(",", io.Select(x => answer.RunningResults[x]));
+                yield return $"{id.PadZeroesLeft(9)},\"{answer.cFilePath}\",\"{answer.DidCompile}\"," + string.Join(",", io.Select(x => answer.RunningResults[x]));
         }
     }
 }

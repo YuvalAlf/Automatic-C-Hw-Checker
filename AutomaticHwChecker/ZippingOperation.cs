@@ -14,7 +14,7 @@ namespace AutomaticHwChecker
 {
     public static class ZippingOperation
     {
-        private static readonly Regex FormatRegex = new Regex(@"[^_]+_[\d]+(_[\d]+|_).zip");
+        private static readonly Regex FormatRegex = new Regex(@"[^_]+_[\d]+(_[\d]+|_)?.zip");
 
         private static bool IsInFormat(string zipFileName) => FormatRegex.IsMatch(zipFileName);
 

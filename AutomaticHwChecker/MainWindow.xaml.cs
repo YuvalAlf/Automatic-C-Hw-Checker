@@ -35,8 +35,8 @@ namespace AutomaticHwChecker
             this.ChooseHomeworkDirectoryButton.Click += (sender, args) => ChooseHomeworkDirectory();
             this.ChooseInputOutputDirectoryButton.Click += (sender, args) => ChooseInputOutputDirectory();
 
-            this.HomeworkSolutionsDirectoryTextbox.Text = @"C:\Users\Yuval\Desktop\hws";
-            this.InputOutputDirectoryTextbox.Text = @"C:\Users\Yuval\Desktop\IO";
+            this.HomeworkSolutionsDirectoryTextbox.Text = @"C:\Users\Yuval\Google Drive\Introduction To Computers\Hws\Hw1\הגשות במודל";
+            this.InputOutputDirectoryTextbox.Text = @"C:\Users\Yuval\Google Drive\Introduction To Computers\Hws\Hw1\IO";
         }
 
         private void ChooseHomeworkDirectory()

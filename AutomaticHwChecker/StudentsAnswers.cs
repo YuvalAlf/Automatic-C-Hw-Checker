@@ -72,10 +72,14 @@ namespace AutomaticHwChecker
 
         public static IEnumerable<string> ToCsvLines(StudentsAnswers[] studentsResults, InputOutput[] io)
         {
-            yield return "ID,C File Path,Did Compile," + string.Join(",", io.Select(x => x.InputName)) + ",Comments,Grade";
+            string IdAsString(string[] ids)
+            {
+                return string.Join(",", ids.Select(id => id.PadZeroesLeft(9))) + (ids.Length == 1 ? "," : "");
+            }
+
+            yield return "ID1,ID2,C File Path,Did Compile," + string.Join(",", io.Select(x => x.InputName)) + ",Comments,Grade";
             foreach (var answer in studentsResults)
-            foreach (var id in answer.Ids)
-                yield return $"{id.PadZeroesLeft(9)},\"{answer.cFilePath}\",\"{answer.DidCompile}\"," + string.Join(",", io.Select(x => answer.RunningResults[x]));
+                yield return IdAsString(answer.Ids) + $",\"{answer.cFilePath}\",\"{answer.DidCompile}\"," + string.Join(",", io.Select(x => answer.RunningResults[x]));
         }
     }
 }

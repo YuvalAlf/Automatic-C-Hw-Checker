@@ -19,7 +19,8 @@ namespace AutomaticHwChecker
             var exeName = "exeFile";
             var exeFilePath = Path.Combine(Path.GetDirectoryName(cFilePath), exeName + ".exe");
 
-            var arguements = $"{cFilePath} -pedantic -ansi -Wall -o {exeName}";
+            //var arguements = $"{cFilePath} -pedantic -ansi -Wall -o {exeName}";
+            var arguements = $"{cFilePath} -o {exeName}";
             var startInfo = new ProcessStartInfo("mingw32-gcc", arguements);
             startInfo.WorkingDirectory = Path.GetDirectoryName(cFilePath);
             startInfo.CreateNoWindow = true;

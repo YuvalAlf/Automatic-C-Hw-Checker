@@ -20,7 +20,7 @@ namespace AutomaticHwChecker
             var results = new Dictionary<InputOutput, string>();
 
             foreach (var inputOutput in inputOutputPath)
-                results[inputOutput] = Utils.TryRunFor(500, () => Run(exeFile, inputOutput.InputPath, inputOutput.OutputPath));
+                results[inputOutput] = Utils.TryRunFor(2000, () => Run(exeFile, inputOutput.InputPath, inputOutput.OutputPath));
 
             return results;
         }

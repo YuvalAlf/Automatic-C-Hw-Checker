@@ -35,8 +35,8 @@ namespace AutomaticHwChecker
             this.ChooseHomeworkDirectoryButton.Click += (sender, args) => ChooseHomeworkDirectory();
             this.ChooseInputOutputDirectoryButton.Click += (sender, args) => ChooseInputOutputDirectory();
 
-            this.HomeworkSolutionsDirectoryTextbox.Text = @"C:\Users\Yuval\Google Drive\Introduction To Computers\Hws\Hw1\הגשות במודל";
-            this.InputOutputDirectoryTextbox.Text = @"C:\Users\Yuval\Google Drive\Introduction To Computers\Hws\Hw1\IO";
+            this.HomeworkSolutionsDirectoryTextbox.Text = @"C:\Users\Yuval\Google Drive\Introduction To Computers\Hws\Hw2\Student Files";
+            this.InputOutputDirectoryTextbox.Text = @"C:\Users\Yuval\Google Drive\Introduction To Computers\Hws\Hw2\IO";
         }
 
         private void ChooseHomeworkDirectory()
@@ -118,7 +118,14 @@ namespace AutomaticHwChecker
                 Process.Start(CsvResultPath);
                 logFile.WriteLine("For future use --- Lie Detector:");
                 logFile.IncorporateTab();
-
+                var cFilesDir = Path.Combine(DesktopPath, "cFiles");
+                Directory.CreateDirectory(cFilesDir);
+                var rnd = new Random();
+                studentsResults.Select(r => r.cFilePath).ForEach(sourcePath =>
+                                                                 {
+                                                                     var resultPath = Path.Combine(cFilesDir, rnd.Next().ToString() + ".c");
+                                                                     File.Copy(sourcePath, resultPath);
+                                                                 });
                 logFile.UncorporateTab();
 
 

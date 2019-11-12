@@ -35,8 +35,8 @@ namespace AutomaticHwChecker
             this.ChooseHomeworkDirectoryButton.Click += (sender, args) => ChooseHomeworkDirectory();
             this.ChooseInputOutputDirectoryButton.Click += (sender, args) => ChooseInputOutputDirectory();
 
-            this.HomeworkSolutionsDirectoryTextbox.Text = @"C:\Users\Yuval\Google Drive\Introduction To Computers\Hws\Hw2\Student Files";
-            this.InputOutputDirectoryTextbox.Text = @"C:\Users\Yuval\Google Drive\Introduction To Computers\Hws\Hw2\IO";
+            this.HomeworkSolutionsDirectoryTextbox.Text = @"C:\Users\Yuval\Google Drive\Introduction To Computers Course\Semester a\Hw Checking\Hw0\Moodle Hws";
+            this.InputOutputDirectoryTextbox.Text = @"C:\Users\Yuval\Google Drive\Introduction To Computers Course\Semester a\Hw Checking\Hw0\IO";
         }
 
         private void ChooseHomeworkDirectory()
@@ -88,50 +88,53 @@ namespace AutomaticHwChecker
             {
                 logFile.WriteLine("Automatic Hw Checker, " + DateTime.Now.ToLongDateString());
 
-                logFile.WriteLine("");
 
-                logFile.WriteLine("Unzipping and checking files:");
-                logFile.IncorporateTab();
-                var unzippedDirectoryLocation = ZippingOperation.UnzipFilesTo(HomeworkSolutionsDirectoryPath, DesktopPath, logFile);
-                logFile.UncorporateTab();
-                logFile.WriteLine("Finnished zipping files to: " + unzippedDirectoryLocation);
-
-                logFile.WriteLine("");
-
+                logFile.WriteLine();
+                
                 logFile.WriteLine("Input-Output Files:");
                 logFile.IncorporateTab();
-                logFile.WriteLine("Directory: " + InputOutputDirectoryPath);
-                var inputOutputPairs = InputOutput.ParseOfDirectory(InputOutputDirectoryPath);
-                inputOutputPairs.Select(x => x.AsString()).ForEach(logFile.WriteLine);
+                    logFile.WriteLine("Directory: " + InputOutputDirectoryPath);
+                    var inputOutputPairs = InputOutput.ParseOfDirectory(InputOutputDirectoryPath);
+                    inputOutputPairs.Select(x => x.AsString()).ForEach(logFile.WriteLine);
                 logFile.UncorporateTab();
-                
-                logFile.WriteLine("");
+
+                logFile.WriteLine();
+
+                RenameToEnglish(HomeworkSolutionsDirectoryPath);
 
                 logFile.WriteLine("Checking Files:");
                 logFile.IncorporateTab();
-                var studentsResults = CheckingOperation.CheckHw(unzippedDirectoryLocation, inputOutputPairs, logFile);
+                    var studentsResults = CheckingOperation.CheckHw(HomeworkSolutionsDirectoryPath, inputOutputPairs, logFile);
                 logFile.UncorporateTab();
 
 
                 logFile.WriteLine("Publishing CSV result at: " + CsvResultPath);
                 File.WriteAllLines(CsvResultPath, StudentsAnswers.ToCsvLines(studentsResults, inputOutputPairs));
                 Process.Start(CsvResultPath);
-                logFile.WriteLine("For future use --- Lie Detector:");
-                logFile.IncorporateTab();
+
+
                 var cFilesDir = Path.Combine(DesktopPath, "cFiles");
                 Directory.CreateDirectory(cFilesDir);
                 var rnd = new Random();
-                studentsResults.Select(r => r.cFilePath).ForEach(sourcePath =>
+                studentsResults.Where(r => r.cFilePath != null)
+                               .Select(r => r.cFilePath).ForEach(sourcePath =>
                                                                  {
-                                                                     var resultPath = Path.Combine(cFilesDir, rnd.Next().ToString() + ".c");
+                                                                     var resultPath = Path.Combine(cFilesDir, Path.GetFileNameWithoutExtension(sourcePath) + "_" + rnd.Next() + ".c");
                                                                      File.Copy(sourcePath, resultPath);
                                                                  });
-                logFile.UncorporateTab();
 
 
-                logFile.WriteLine("");
+                logFile.WriteLine();
                 logFile.WriteLine("Finished Successfully");
             }
+        }
+
+        private void RenameToEnglish(string homeworkSolutionsDirectoryPath)
+        {
+            int index = 1;
+            foreach (var directory in Directory.EnumerateDirectories(homeworkSolutionsDirectoryPath).ToArray())
+                if(directory.Any(ch => ch >= 'א' && ch <= 'ת'))
+                    Directory.Move(directory, Path.Combine(homeworkSolutionsDirectoryPath, (index++).ToString()));
         }
     }
 }

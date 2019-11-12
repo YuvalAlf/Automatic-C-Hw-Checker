@@ -23,17 +23,18 @@ namespace AutomaticHwChecker
 
         public static InputOutput[] ParseOfDirectory(string inputOutputDirectoryPath)
         {
-            var outputRegex = new Regex($".*out[^/].[^/]");
-            var inputRegex = new Regex($".*in[^/].[^/]");
-            InputOutput ofDirectory(string directory)
+            var ios = new List<InputOutput>();
+            var files = Directory.EnumerateFiles(inputOutputDirectoryPath).ToArray();
+            for (int i = 1; true; i++)
             {
-                var innerFiles = Directory.EnumerateFiles(directory).ToArray();
-                var outputPath = innerFiles.First(outputRegex.IsMatch);
-                var inputPath  = innerFiles.First(inputRegex.IsMatch);
-                return new InputOutput(inputPath, outputPath);
+                var inputPath = Path.Combine(inputOutputDirectoryPath, "input" + i.ToString() + ".txt");
+                var outputPath = Path.Combine(inputOutputDirectoryPath, "output" + i.ToString() + ".txt");
+                if (!File.Exists(inputPath) || !File.Exists(outputPath))
+                    break;
+                ios.Add(new InputOutput(inputPath, outputPath)); 
             }
 
-            return Directory.EnumerateDirectories(inputOutputDirectoryPath).Select(ofDirectory).ToArray();
+            return ios.ToArray();
         }
 
         public string AsString()

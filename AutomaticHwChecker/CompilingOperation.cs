@@ -12,15 +12,13 @@ namespace AutomaticHwChecker
 {
     public static class CompilingOperation
     {
-        public static string Compile(string cFilePath, StringBuilder problems)
+        public static string Compile(string cFilePath, LogFile logFile)
         {
-            if (cFilePath == null)
-                return null;
             var exeName = "exeFile";
             var exeFilePath = Path.Combine(Path.GetDirectoryName(cFilePath), exeName + ".exe");
 
             //var arguements = $"{cFilePath} -pedantic -ansi -Wall -o {exeName}";
-            var arguements = $"{cFilePath} -o {exeName}";
+            var arguements = $"{Path.GetFileName(cFilePath)} -o {exeName}";
             var startInfo = new ProcessStartInfo("mingw32-gcc", arguements);
             startInfo.WorkingDirectory = Path.GetDirectoryName(cFilePath);
             startInfo.CreateNoWindow = true;
@@ -29,13 +27,17 @@ namespace AutomaticHwChecker
             startInfo.UseShellExecute = false;
             using (var process = Process.Start(startInfo))
             {
-                process.ErrorDataReceived += (sender, args) => problems.Append(args.Data + ". ");
+                process.ErrorDataReceived += (sender, args) =>
+                                             {
+                                                 if (!string.IsNullOrEmpty(args.Data))
+                                                    logFile.WriteLine("Error: " + args.Data + ". ");
+                                             };
                 process.BeginErrorReadLine();
                 process.WaitForExit(3000);
 
                 if (!File.Exists(exeFilePath))
                 {
-                    problems.Append("Compilation Error. ");
+                    logFile.WriteImportantLine("Compilation Error. ");
                     return null;
                 }
 

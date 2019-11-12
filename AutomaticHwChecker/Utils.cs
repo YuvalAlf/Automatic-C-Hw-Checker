@@ -5,11 +5,14 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows.Media.Animation;
 
 namespace AutomaticHwChecker
 {
     public static class Utils
     {
+        public static bool IsDigit(this char @this) => char.IsDigit(@this);
+
         public static string Repeat(this string @this, int times)
         {
             StringBuilder str = new StringBuilder();

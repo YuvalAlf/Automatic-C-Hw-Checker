@@ -27,6 +27,8 @@ namespace AutomaticHwChecker
 
         public void WriteLine(string line) => this.TextWriter.WriteLine("\t".Repeat(numberOfTabs) + line);
 
+        public void WriteLine() => this.TextWriter.WriteLine();
+
         public void Dispose()
         {
             TextWriter?.Dispose();
